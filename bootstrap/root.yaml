@@ -3,7 +3,7 @@ kind: Application
 metadata:
   creationTimestamp: null
   finalizers:
-  - resources-finalizer.argocd.argoproj.io
+    - resources-finalizer.argocd.argoproj.io
   labels:
     app.kubernetes.io/managed-by: argocd-autopilot
     app.kubernetes.io/name: root
@@ -14,21 +14,31 @@ spec:
     namespace: argocd
     server: https://kubernetes.default.svc
   ignoreDifferences:
-  - group: argoproj.io
-    jsonPointers:
-    - /status
-    kind: Application
+    - group: argoproj.io
+      jsonPointers:
+        - /status
+      kind: Application
   project: default
-  source:
-    path: projects
-    repoURL: https://github.com/visheshofficial/argocd-autopilot.git
+  # source:
+  #   path: projects
+  #   repoURL: https://github.com/visheshofficial/argocd-autopilot.git
+  sources:
+    - repoURL: https://github.com/visheshofficial/argocd-autopilot.git # Can point to either a Helm chart repo or a git repo.
+      # targetRevision: HEAD # For Helm, this refers to the chart version.
+      path: projects # This has no meaning for Helm charts pulled directly from a Helm repo instead of git.
+      # ref: my-repo # For Helm, acts as a reference to this source for fetching values files from this source. Has no meaning when under `source` field
+    - repoURL: https://github.com/visheshofficial/argocd-autopilot.git # Can point to either a Helm chart repo or a git repo.
+      # targetRevision: HEAD # For Helm, this refers to the chart version.
+      path: appset # This has no meaning for Helm charts pulled directly from a Helm repo instead of git.
+      # ref: my-repo # For Helm, acts as a reference to this source for fetching values files from this source. Has no meaning when under `source` field
+
   syncPolicy:
     automated:
       allowEmpty: true
       prune: true
       selfHeal: true
     syncOptions:
-    - allowEmpty=true
+      - allowEmpty=true
 status:
   health: {}
   summary: {}
@@ -36,5 +46,5 @@ status:
     comparedTo:
       destination: {}
       source:
-        repoURL: ""
-    status: ""
+        repoURL: ''
+    status: ''
