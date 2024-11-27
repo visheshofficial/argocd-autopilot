@@ -1,0 +1,21 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: argo-cd-local
+  namespace: argocd
+spec:
+  destination:
+    namespace: argocd
+    server: https://kubernetes.default.svc
+  project: default
+  sources:
+    - repoURL: https://github.com/argoproj/argo-helm
+      path: charts/argo-cd
+      targetRevision: argo-cd-7.7.0
+      helm:
+        valueFiles:
+          - $values/bootstrap/argo-cd/values.yaml
+    - repoURL: https://github.com/visheshofficial/argocd-autopilot.git
+      targetRevision: master
+      ref: values
